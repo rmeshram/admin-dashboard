@@ -2,7 +2,7 @@
   "name": "admin-dashboard",
   "version": "4.5.0",
   "description": "Admin dashboard",
-  "homepage": "http://rmeshram.github.io/admin-dashboard/",
+  "homepage": "http://rmeshram.github.io/admin-dashboard",
   "bugs": {
     "url": "test"
   },
@@ -20,7 +20,7 @@
     "test:cov": "npm test -- --coverage --watchAll=false",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build" 
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@coreui/chartjs": "^3.1.1",
