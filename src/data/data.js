@@ -219,9 +219,10 @@ const yearlyData = {
 
 const getMonthlyData = () => {
   return new Promise((resolve, reject) => {
+    const month = new Date().getMonth();
     setTimeout(async () => {
       try {
-        const response = await fetch('/api/rahul/june')
+        const response = await fetch(`/api/month/${month+1}`)
         await response.json();
       } catch (error) {
         console.log(error)
@@ -232,19 +233,19 @@ const getMonthlyData = () => {
   })
 }
 
-const getIncidents = () => {
+const getIncidents = (id) => {
   return new Promise((resolve, reject) => {
     setTimeout(async () => {
       try {
-        const response = await fetch('/api/incidents/june')
+        const response = await fetch(`/api/incidents/${id}`)
         await response.json();
       } catch (error) {
         console.log(error)
       } finally {
         resolve(incidents)
       }
-    }, 1000)
+    }, 200)
   })
 }
 
-export {  yearlyData, getMonthlyData, getIncidents };
+export { yearlyData, getMonthlyData, getIncidents };

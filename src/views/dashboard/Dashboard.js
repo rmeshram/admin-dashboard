@@ -9,54 +9,31 @@ import {
   CCardBody,
   CCardFooter,
   CCardHeader,
-  CFormSelect,
   CPagination,
   CPaginationItem,
   CSpinner
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 import WidgetsBrand from '../widgets/WidgetsBrand'
-
-import avatar1 from 'src/assets/images/avatars/1.jpg'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import avatar3 from 'src/assets/images/avatars/3.jpg'
-import avatar4 from 'src/assets/images/avatars/4.jpg'
-import avatar5 from 'src/assets/images/avatars/5.jpg'
-import avatar6 from 'src/assets/images/avatars/6.jpg'
 import Select from 'react-select';
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-} from '@coreui/icons'
-
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
-import {  yearlyData, getMonthlyData, getIncidents } from "../../data/data";
+import { getMonthlyData, getIncidents } from "../../data/data";
 
 
-function Inbox({ data, selectedOption, incidents }) {
+function Inbox({ data, selectedOption }) {
   let [selectedLead, setSelectedLead] = useState({});
+  let [incidents, setIncidents] = useState([]);
   let [pageNo, setPageNo] = useState(1);
   let [filteredData, setFilteredData] = useState(data);
-  const handleClick = (item) => {
-    setSelectedLead(item);
+
+  const handleClick = async (item) => {
+    try {
+      const incidents = await getIncidents(item.id)
+      setIncidents(incidents)
+    } catch(error) {
+      console.error(error)
+    } finally {
+      setSelectedLead(item);
+    }
   };
 
 
@@ -157,7 +134,6 @@ const Dashboard = () => {
 
   const [selectedOption, setSelectedOption] = useState(defaultValue);
   let [monthRecord, setMonthRecord] = useState([])
-  let [incidents, setIncidents] = useState([])
   let [isLoading, setIsLoading] = useState(true)
 
   const handleChange = (option, element) => {
@@ -168,8 +144,6 @@ const Dashboard = () => {
     try {
       const response = await getMonthlyData();
       setMonthRecord(response);
-      const incidents = await getIncidents()
-      setIncidents(incidents)
     } catch (error) {
 
     } finally {
@@ -239,12 +213,11 @@ const Dashboard = () => {
               />
             </CCardHeader>
             <CCardBody>
-              <Inbox data={monthRecord} incidents={incidents} selectedOption={selectedOption} />
+              <Inbox data={monthRecord} selectedOption={selectedOption} />
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
-
     </>
   )
 }

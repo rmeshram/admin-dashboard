@@ -6,23 +6,27 @@
     --right-msg-bg: #579ffb;
 }
 
-.card-container {
-    width: 100%;
-    background-color: red;
-    border: 1px solid black;
-    padding: 20px;
-    margin: 20px;
+
+
+html {
+    box-sizing: border-box;
 }
 
-.cards {
-    display: flex;
-    padding: 10px;
+*,
+*:before,
+*:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
 }
+
+
+/* inbox component  */
 
 .item-container {
     border-bottom: .5px solid gray;
     background-color: white;
-    padding-right:10px;
+    padding-right: 10px;
 }
 
 .item-container .email-to {
@@ -42,71 +46,6 @@
     padding: 15px;
 }
 
-h1,
-p {
-    font-family: Lato;
-}
-
-.suggestions {
-    padding: 1rem;
-    border: 1px solid silver;
-    width: 90%;
-    position: absolute;
-}
-
-.option {
-    padding: 0.5em;
-    border-bottom: 1px solid silver;
-}
-
-.option:nth-child(even) {
-    background-color: antiquewhite;
-}
-
-main {
-    margin: auto;
-    text-align: center;
-    padding: 1rem;
-    width: 400px;
-}
-
-.select-box-container {
-    margin: auto;
-}
-
-input {
-    padding: 1em;
-    text-align: center;
-    width: 90%;
-}
-
-.dropdown {
-    justify-content: space-between;
-    position: relative;
-}
-
-span {
-    position: absolute;
-    right: 30px;
-    line-height: 3;
-    margin-right: 4px;
-}
-
-
-
-
-
-html {
-    box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
-}
 
 .msger {
     display: flex;
@@ -250,12 +189,9 @@ html {
 }
 
 .select-box {
-    float:right;
+    float: right;
     width: 25%;
 }
-
-
-/* -=-=-=-=-=-=Inbox */
 
 .inbox-container {
     width: 100%;
@@ -283,10 +219,6 @@ html {
 
 }
 
-
-/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-
-
 .msg-img .avatar-md {
     width: 100%;
     height: 100%;
@@ -294,11 +226,9 @@ html {
 
 .leads-select {
     width: 25%;
-    float:right;
+    float: right;
 }
 
-
-/* -=-=-=-= */
 .spinner {
     display: flex;
     justify-content: center;

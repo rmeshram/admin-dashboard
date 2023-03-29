@@ -2,20 +2,12 @@ import React, { useState, useEffect } from 'react'
 import {
   CRow,
   CCol,
-  CDropdown,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdownToggle,
   CWidgetStatsA,
   CSpinner
 } from '@coreui/react'
 import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
-import CIcon from '@coreui/icons-react'
-import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 import { yearlyData, getMonthlyData, getIncidents } from "../../data/data";
-
-
 
 const WidgetsDropdown = () => {
   let [warmleads, setWarmLeads] = useState([]);
@@ -26,27 +18,22 @@ const WidgetsDropdown = () => {
   let [totalWarmLeadsYearly, setTotalWarmLeadsYearly] = useState([]);
   let [totalRespondedYearly, setTotalRespondedYearly] = useState([]);
   let [totalNotVisitedYearly, setTotalNotVisitedYearly] = useState([]);
-  let [incidents, setIncidents] = useState([])
   let [isLoading, setIsLoading] = useState(true)
 
   const getData = async () => {
     try {
       const response = await getMonthlyData();
       setTotalLeads(response);
-      const incidents = await getIncidents()
-      setIncidents(incidents)
     } catch (error) {
-
+      console.error(error)
     } finally {
       setIsLoading(false)
     }
-
   }
 
   useEffect(() => {
     setIsLoading(true)
     getData()
-
   }, [])
 
   useEffect(() => {
@@ -283,9 +270,6 @@ const WidgetsDropdown = () => {
           value={
             <>
               {unvisited.length}
-              {/* <span className="fs-6 fw-normal">
-                (-23.6% <CIcon icon={cilArrowBottom} />)
-              </span> */}
             </>
           }
           title="Leads Unvisited"
