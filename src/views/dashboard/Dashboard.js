@@ -48,17 +48,17 @@ import {
 } from '@coreui/icons'
 
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
-import { monthlyRecord, incidents, yearlyData } from "../../data/data";
+import {  yearlyData, getMonthlyData, getIncidents } from "../../data/data";
 
 
-function Inbox({ data, selectedOption }) {
+function Inbox({ data, selectedOption, incidents }) {
   let [selectedLead, setSelectedLead] = useState({});
   let [pageNo, setPageNo] = useState(1);
   let [filteredData, setFilteredData] = useState(data);
-
   const handleClick = (item) => {
     setSelectedLead(item);
   };
+
 
   useEffect(() => {
     if (selectedOption.value === 'ALL') {
@@ -116,13 +116,13 @@ function Inbox({ data, selectedOption }) {
           </Suspense>
         </div>
       </div>
-      <CPagination size="sm" align="center" aria-label="Page navigation example">
+      {filteredData.length > 6 ? <CPagination size="sm" align="center" aria-label="Page navigation example">
         <CPaginationItem disabled={pageNo === 1}>Previous</CPaginationItem>
         <CPaginationItem>{pageNo}</CPaginationItem>
         <CPaginationItem>{pageNo + 1}</CPaginationItem>
         <CPaginationItem>{pageNo + 2}</CPaginationItem>
         <CPaginationItem disabled={pageNo === filteredData.length / 6 - 1}>Next</CPaginationItem>
-      </CPagination>
+      </CPagination> : null}
     </>
   );
 }
@@ -156,10 +156,35 @@ const Dashboard = () => {
 
 
   const [selectedOption, setSelectedOption] = useState(defaultValue);
+  let [monthRecord, setMonthRecord] = useState([])
+  let [incidents, setIncidents] = useState([])
+  let [isLoading, setIsLoading] = useState(true)
 
   const handleChange = (option, element) => {
     setSelectedOption(option);
   };
+
+  const getData = async () => {
+    try {
+      const response = await getMonthlyData();
+      setMonthRecord(response);
+      const incidents = await getIncidents()
+      setIncidents(incidents)
+    } catch (error) {
+
+    } finally {
+      setIsLoading(false)
+    }
+
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+  if(isLoading) {
+    return <CSpinner color="primary" className='spinner' align="center" />
+  }
   return (
     <>
       <WidgetsDropdown />
@@ -214,7 +239,7 @@ const Dashboard = () => {
               />
             </CCardHeader>
             <CCardBody>
-              <Inbox data={monthlyRecord} selectedOption={selectedOption} />
+              <Inbox data={monthRecord} incidents={incidents} selectedOption={selectedOption} />
             </CCardBody>
           </CCard>
         </CCol>

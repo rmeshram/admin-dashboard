@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CRow,
   CCol,
@@ -7,12 +7,15 @@ import {
   CDropdownItem,
   CDropdownToggle,
   CWidgetStatsA,
+  CSpinner
 } from '@coreui/react'
 import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
-import { monthlyRecord, incidents, yearlyData } from "../../data/data"
+import { yearlyData, getMonthlyData, getIncidents } from "../../data/data";
+
+
 
 const WidgetsDropdown = () => {
   let [warmleads, setWarmLeads] = useState([]);
@@ -23,26 +26,55 @@ const WidgetsDropdown = () => {
   let [totalWarmLeadsYearly, setTotalWarmLeadsYearly] = useState([]);
   let [totalRespondedYearly, setTotalRespondedYearly] = useState([]);
   let [totalNotVisitedYearly, setTotalNotVisitedYearly] = useState([]);
+  let [incidents, setIncidents] = useState([])
+  let [isLoading, setIsLoading] = useState(true)
+
+  const getData = async () => {
+    try {
+      const response = await getMonthlyData();
+      setTotalLeads(response);
+      const incidents = await getIncidents()
+      setIncidents(incidents)
+    } catch (error) {
+
+    } finally {
+      setIsLoading(false)
+    }
+
+  }
 
   useEffect(() => {
-    setTotalLeads(monthlyRecord)
-    const warmleads = monthlyRecord?.filter((d) => {
+    setIsLoading(true)
+    getData()
+
+  }, [])
+
+  useEffect(() => {
+
+    const warmleads = totalLeads?.filter((d) => {
       return d.type.toLowerCase() === "WARM_LEAD".toLowerCase();
     });
-    setWarmLeads(warmleads);
-    const responded = monthlyRecord?.filter((d) => {
+    const responded = totalLeads?.filter((d) => {
       return d.type.toLowerCase() === "RESPONDED".toLowerCase();
     });
-    setResponded(responded);
-    const unvisited = monthlyRecord?.filter((d) => {
+    const unvisited = totalLeads?.filter((d) => {
       return d.type.toLowerCase() === "UNVISITED".toLowerCase();
     });
+
+    setWarmLeads(warmleads);
+    setResponded(responded);
     setUnvisited(unvisited);
+
     setTotalLeadsYearly(yearlyData.total_leads);
     setTotalWarmLeadsYearly(yearlyData.warm_leads);
     setTotalRespondedYearly(yearlyData.leads_responded);
     setTotalNotVisitedYearly(yearlyData.leads_unresponded);
-  }, []);
+
+  }, [totalLeads]);
+
+  if (isLoading) {
+    return <CSpinner color="primary" className='spinner' align="center" />
+  }
 
   return (
     <CRow>
@@ -52,7 +84,7 @@ const WidgetsDropdown = () => {
           color="primary"
           value={
             <>
-            {totalLeads.length}
+              {totalLeads.length}
             </>
           }
           title="Total Leads"
@@ -193,7 +225,7 @@ const WidgetsDropdown = () => {
           color="warning"
           value={
             <>
-             {responded.length}
+              {responded.length}
             </>
           }
           title="Leads Responded"
@@ -250,7 +282,7 @@ const WidgetsDropdown = () => {
           color="danger"
           value={
             <>
-             {unvisited.length}
+              {unvisited.length}
               {/* <span className="fs-6 fw-normal">
                 (-23.6% <CIcon icon={cilArrowBottom} />)
               </span> */}

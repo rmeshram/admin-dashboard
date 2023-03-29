@@ -296,3 +296,17 @@ html {
     width: 25%;
     float:right;
 }
+
+
+/* -=-=-=-= */
+.spinner {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

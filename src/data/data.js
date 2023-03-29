@@ -217,4 +217,34 @@ const yearlyData = {
   }
 }
 
-export { monthlyRecord, incidents, yearlyData };
+const getMonthlyData = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(async () => {
+      try {
+        const response = await fetch('/api/rahul/june')
+        await response.json();
+      } catch (error) {
+        console.log(error)
+      } finally {
+        resolve(monthlyRecord)
+      }
+    }, 500)
+  })
+}
+
+const getIncidents = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(async () => {
+      try {
+        const response = await fetch('/api/incidents/june')
+        await response.json();
+      } catch (error) {
+        console.log(error)
+      } finally {
+        resolve(incidents)
+      }
+    }, 1000)
+  })
+}
+
+export {  yearlyData, getMonthlyData, getIncidents };
